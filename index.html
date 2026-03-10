@@ -26,16 +26,18 @@
 const { useState, useEffect, useMemo } = React;
 
 const {
-Radar,
-RadarChart,
-PolarGrid,
-PolarAngleAxis,
-ResponsiveContainer
+  Radar,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  ResponsiveContainer
 } = Recharts;
 
 function cn(...classes){
   return classes.filter(Boolean).join(" ");
-} const makeIcon = (symbol) => ({ size = 20, className = "" }) => (
+}
+
+const makeIcon = (symbol) => ({ size = 20, className = "" }) => (
   <span
     className={className}
     style={{
@@ -88,7 +90,6 @@ const Flame = makeIcon("🔥");
 const Snowflake = makeIcon("❄️");
 const Baby = makeIcon("👶");
 const Compass = makeIcon("🧭");
-
 
 // --- CONFIGURACIÓN MAESTRA DE LAS 5 HERIDAS ---
 const WOUNDS_CONFIG = {
