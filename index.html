@@ -4,6 +4,8 @@
 <head>
 
 <meta charset="UTF-8">
+    
+<script src="https://unpkg.com/lucide@latest"></script>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -22,21 +24,19 @@
 
 <script type="text/babel">
 
-import React, { useState, useEffect, useMemo } from 'react';
-import {
-    Shield, Heart, User, Activity, ChevronRight, RefreshCw,
-    Search, AlertCircle, CheckCircle, Info, ArrowLeft, Brain,
-    Star, Zap, Lock, History, Briefcase, Users, MessageCircle, Eye,
-    RotateCcw, Target, Lightbulb, BookOpen, Quote, Sparkles, Anchor,
-    Clock, Wind, UserCheck, Award, ZapOff, Flame, Snowflake,
-    Baby, Compass
-} from 'lucide-react';
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer } from 'recharts';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+const { useState, useEffect, useMemo } = React;
 
+const {
+Radar,
+RadarChart,
+PolarGrid,
+PolarAngleAxis,
+ResponsiveContainer
+} = Recharts;
 
-const cn = (...inputs) => twMerge(clsx(inputs));
+function cn(...classes){
+  return classes.filter(Boolean).join(" ");
+}
 
 
 // --- CONFIGURACIÓN MAESTRA DE LAS 5 HERIDAS ---
@@ -162,7 +162,7 @@ const TEST_QUESTIONS = [
 
 
 // --- COMPONENTE PRINCIPAL ---
-export default function App() {
+function App() {
     const [view, setView] = useState('home');
     const [scope, setScope] = useState(null);
     const [step, setStep] = useState(0);
@@ -529,9 +529,9 @@ export default function App() {
         </div>
     );
 }
-
-
+ReactDOM.createRoot(
+document.getElementById("root")
+).render(<App/>);
 </script>
-
 </body>
 </html>
