@@ -36,7 +36,59 @@ ResponsiveContainer
 
 function cn(...classes){
   return classes.filter(Boolean).join(" ");
-}
+} const makeIcon = (symbol) => ({ size = 20, className = "" }) => (
+  <span
+    className={className}
+    style={{
+      fontSize: size,
+      lineHeight: 1,
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "center",
+      width: size,
+      height: size
+    }}
+  >
+    {symbol}
+  </span>
+);
+
+const Shield = makeIcon("🛡️");
+const Heart = makeIcon("❤️");
+const User = makeIcon("👤");
+const Activity = makeIcon("📈");
+const ChevronRight = makeIcon("›");
+const RefreshCw = makeIcon("↻");
+const Search = makeIcon("🔎");
+const AlertCircle = makeIcon("⚠️");
+const CheckCircle = makeIcon("✅");
+const Info = makeIcon("ℹ️");
+const ArrowLeft = makeIcon("←");
+const Brain = makeIcon("🧠");
+const Star = makeIcon("⭐");
+const Zap = makeIcon("⚡");
+const Lock = makeIcon("🔒");
+const History = makeIcon("🕘");
+const Briefcase = makeIcon("💼");
+const Users = makeIcon("👥");
+const MessageCircle = makeIcon("💬");
+const Eye = makeIcon("👁️");
+const RotateCcw = makeIcon("↺");
+const Target = makeIcon("🎯");
+const Lightbulb = makeIcon("💡");
+const BookOpen = makeIcon("📘");
+const Quote = makeIcon("“");
+const Sparkles = makeIcon("✨");
+const Anchor = makeIcon("⚓");
+const Clock = makeIcon("⏰");
+const Wind = makeIcon("🌬️");
+const UserCheck = makeIcon("🙋");
+const Award = makeIcon("🏆");
+const ZapOff = makeIcon("💨");
+const Flame = makeIcon("🔥");
+const Snowflake = makeIcon("❄️");
+const Baby = makeIcon("👶");
+const Compass = makeIcon("🧭");
 
 
 // --- CONFIGURACIÓN MAESTRA DE LAS 5 HERIDAS ---
