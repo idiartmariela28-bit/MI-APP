@@ -1,18 +1,39 @@
-const { useState, useEffect, useMemo } = React;
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
 
-const {
-Radar,
-RadarChart,
-PolarGrid,
-PolarAngleAxis,
-ResponsiveContainer
-} = Recharts;
+<meta charset="UTF-8">
 
+<script src="https://cdn.tailwindcss.com"></script>
 
-const cn = (...classes) => classes.filter(Boolean).join(" ");
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
+<script src="https://unpkg.com/recharts/umd/Recharts.min.js"></script>
+
+</head>
+
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel">
+
+import React, { useState, useEffect, useMemo } from 'react';
+import {
+    Shield, Heart, User, Activity, ChevronRight, RefreshCw,
+    Search, AlertCircle, CheckCircle, Info, ArrowLeft, Brain,
+    Star, Zap, Lock, History, Briefcase, Users, MessageCircle, Eye,
+    RotateCcw, Target, Lightbulb, BookOpen, Quote, Sparkles, Anchor,
+    Clock, Wind, UserCheck, Award, ZapOff, Flame, Snowflake,
+    Baby, Compass
+} from 'lucide-react';
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer } from 'recharts';
+import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 
 const cn = (...inputs) => twMerge(clsx(inputs));
@@ -141,7 +162,7 @@ const TEST_QUESTIONS = [
 
 
 // --- COMPONENTE PRINCIPAL ---
-function App() {
+export default function App() {
     const [view, setView] = useState('home');
     const [scope, setScope] = useState(null);
     const [step, setStep] = useState(0);
@@ -508,13 +529,9 @@ function App() {
         </div>
     );
 }
-</footer>
-</div>
-);
-}
 
 
-ReactDOM.createRoot(
-document.getElementById("root")
-).render(<App/>);
+</script>
 
+</body>
+</html>
