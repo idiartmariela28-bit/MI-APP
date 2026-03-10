@@ -1,13 +1,262 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>EgoScan</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EgoScan</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+    }
+    .wrap {
+      max-width: 760px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
+    h1 {
+      font-size: 42px;
+      margin: 0 0 12px;
+    }
+    p {
+      color: #475569;
+      line-height: 1.5;
+    }
+    .grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 28px;
+    }
+    button {
+      border: 0;
+      border-radius: 18px;
+      padding: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #e2e8f0;
+    }
+    button:hover {
+      background: #cbd5e1;
+    }
+    .card {
+      margin-top: 24px;
+      padding: 24px;
+      border-radius: 20px;
+      background: #eef2ff;
+    }
+    .hidden {
+      display: none;
+    }
+    .small {
+      font-size: 14px;
+      color: #64748b;
+      margin-top: 12px;
+    }
+  </style>
 </head>
-
 <body>
-<div id="root"></div>
+  <div class="wrap">
+    <h1>Tu Mapa Emocional</h1>
+    <p>Versión simple funcionando online. Si esto carga, ya destrabamos la publicación y después armamos la versión completa.</p>
 
-<script type="module" src="/src/main.jsx"></script>
+    <div id="home">
+      <div class="grid">
+        <button onclick="start('personal')">Personal</button>
+        <button onclick="start('pareja')">Pareja</button>
+        <button onclick="start('laboral')">Laboral</button>
+      </div>
+    </div>
+
+    <div id="quiz" class="hidden">
+      <h2 id="question"></h2>
+      <div class="grid" id="options"></div>
+      <div class="small" id="progress"></div>
+    </div>
+
+    <div id="result" class="hidden">
+      <div class="card">
+        <h2 id="resultTitle"></h2>
+        <p id="resultText"></p>
+      </div>
+      <div class="grid">
+        <button onclick="goHome()">Volver al inicio</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const scenarios = {
+      personal: [
+        {
+          q: "Alguien critica una decisión que tomaste con mucha ilusión...",
+          options: [
+            ["Me retiro y me callo", "rechazo"],
+            ["Busco que me entiendan desesperadamente", "abandono"],
+            ["Me siento culpable y pequeño", "humillacion"],
+            ["Ataco de vuelta cuestionando su vida", "traicion"],
+            ["Argumento lógicamente por qué es perfecta", "injusticia"]
+          ]
+        },
+        {
+          q: "Un amigo tarda 2 días en contestar un mensaje tuyo...",
+          options: [
+            ["Ya no le intereso, no vuelvo a escribir", "rechazo"],
+            ["Reviso si hice algo mal para que se aleje", "abandono"],
+            ["Me siento ignorado y ridículo", "humillacion"],
+            ["Me está manipulando con el silencio", "traicion"],
+            ["Es una conducta informal e incorrecta", "injusticia"]
+          ]
+        },
+        {
+          q: "Estás solo en casa un viernes por la noche...",
+          options: [
+            ["Me siento aliviado; nadie me juzga", "rechazo"],
+            ["Siento un vacío insoportable", "abandono"],
+            ["Me pongo a limpiar para sentirme útil", "humillacion"],
+            ["Vigilo redes para ver qué hacen otros", "traicion"],
+            ["Organizo mi agenda rígidamente", "injusticia"]
+          ]
+        }
+      ],
+      pareja: [
+        {
+          q: "Tu pareja te pide un tiempo para pensar...",
+          options: [
+            ["Me alejo y no llamo nunca más", "rechazo"],
+            ["Suplico desesperadamente que se quede", "abandono"],
+            ["Me lo merezco por ser como soy", "humillacion"],
+            ["Pienso que tiene a otra persona", "traicion"],
+            ["Es una falta de eficiencia relacional", "injusticia"]
+          ]
+        },
+        {
+          q: "Hay un silencio largo durante una comida...",
+          options: [
+            ["Me hundo en mis pensamientos solitarios", "rechazo"],
+            ["Me aterra que no haya conexión", "abandono"],
+            ["Siento que soy aburrido y pesado", "humillacion"],
+            ["Me está ocultando un secreto", "traicion"],
+            ["La comunicación debe ser fluida y correcta", "injusticia"]
+          ]
+        },
+        {
+          q: "Tu pareja está muy cariñosa hoy sin motivo...",
+          options: [
+            ["Me siento invadido con tanto contacto", "rechazo"],
+            ["Me relajo, pero quiero que sea eterno", "abandono"],
+            ["Siento que no merezco tanto afecto", "humillacion"],
+            ["Sospecho si ha hecho algo malo", "traicion"],
+            ["Analizo si este afecto es proporcional", "injusticia"]
+          ]
+        }
+      ],
+      laboral: [
+        {
+          q: "Tu jefe pide corregir un trabajo delante de otros colegas...",
+          options: [
+            ["Quiero renunciar de inmediato", "rechazo"],
+            ["Temo que ya no confíe en mí", "abandono"],
+            ["Me siento el más torpe del edificio", "humillacion"],
+            ["Quiere humillarme para ganar él", "traicion"],
+            ["Me enfurezco por mi falta de perfección", "injusticia"]
+          ]
+        },
+        {
+          q: "La empresa anuncia recortes de personal inminentes...",
+          options: [
+            ["Me voy yo antes de que me echen", "rechazo"],
+            ["Me angustia perder mi familia laboral", "abandono"],
+            ["Seguro me toca a mí por inútil", "humillacion"],
+            ["Busco alianzas para que no me toquen", "traicion"],
+            ["Es injusto tras todo mi esfuerzo", "injusticia"]
+          ]
+        },
+        {
+          q: "Te asignan el proyecto más difícil del año...",
+          options: [
+            ["Me siento abrumado y quiero huir", "rechazo"],
+            ["Espero que me feliciten mucho al acabar", "abandono"],
+            ["Siento que me están castigando", "humillacion"],
+            ["Es mi oportunidad de tener el control", "traicion"],
+            ["Debe ser ejecutado a la perfección", "injusticia"]
+          ]
+        }
+      ]
+    };
+
+    const woundInfo = {
+      rechazo: "Herida de Rechazo: tendés a retirarte para no sentirte expuesta.",
+      abandono: "Herida de Abandono: buscás sostén afuera para calmar el miedo a quedarte sola.",
+      humillacion: "Herida de Humillación: cargás vergüenza y te castigás más de la cuenta.",
+      traicion: "Herida de Traición: querés controlar para no sentir vulnerabilidad.",
+      injusticia: "Herida de Injusticia: te endurecés para no mostrar sensibilidad."
+    };
+
+    let currentScope = "";
+    let currentStep = 0;
+    let answers = [];
+
+    function start(scope) {
+      currentScope = scope;
+      currentStep = 0;
+      answers = [];
+      document.getElementById("home").classList.add("hidden");
+      document.getElementById("result").classList.add("hidden");
+      document.getElementById("quiz").classList.remove("hidden");
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const item = scenarios[currentScope][currentStep];
+      document.getElementById("question").textContent = item.q;
+      document.getElementById("progress").textContent = `Pregunta ${currentStep + 1} de ${scenarios[currentScope].length}`;
+      const box = document.getElementById("options");
+      box.innerHTML = "";
+      item.options.forEach(([text, value]) => {
+        const btn = document.createElement("button");
+        btn.textContent = text;
+        btn.onclick = () => choose(value);
+        box.appendChild(btn);
+      });
+    }
+
+    function choose(value) {
+      answers.push(value);
+      currentStep++;
+      if (currentStep < scenarios[currentScope].length) {
+        renderQuestion();
+      } else {
+        finish();
+      }
+    }
+
+    function finish() {
+      const counts = {
+        rechazo: 0,
+        abandono: 0,
+        humillacion: 0,
+        traicion: 0,
+        injusticia: 0
+      };
+      answers.forEach(a => counts[a]++);
+      const winner = Object.keys(counts).sort((a,b) => counts[b] - counts[a])[0];
+      document.getElementById("quiz").classList.add("hidden");
+      document.getElementById("result").classList.remove("hidden");
+      document.getElementById("resultTitle").textContent = "Resultado: " + winner.toUpperCase();
+      document.getElementById("resultText").textContent = woundInfo[winner];
+    }
+
+    function goHome() {
+      document.getElementById("home").classList.remove("hidden");
+      document.getElementById("quiz").classList.add("hidden");
+      document.getElementById("result").classList.add("hidden");
+    }
+  </script>
 </body>
 </html>
